@@ -1,0 +1,26 @@
+# MLP Policy Configuration for Stack Blocks Two Task
+# State-based observations: proprioceptive robot state + block poses
+
+# Model configuration
+obs_dim: 28          # 14 (proprioceptive) + 14 (block poses)
+action_dim: 14       # 6 joints + 1 gripper per arm
+hidden_dims: [256, 256, 256]
+device: "cuda:0"
+action_scale: 1.0
+
+# Training configuration
+learning_rate: 1e-4
+batch_size: 64
+num_epochs: 100
+
+# Data configuration
+data_type:
+  qpos: true         # Joint positions and gripper states
+  endpose: false     # End effector poses (not needed for state-based)
+  rgb: false         # RGB images (not needed for state-based)
+  depth: false       # Depth images (not needed for state-based)
+  pointcloud: false  # Point clouds (not needed for state-based)
+
+# Task specific configuration
+task_name: "stack_blocks_two"
+max_episode_length: 1000

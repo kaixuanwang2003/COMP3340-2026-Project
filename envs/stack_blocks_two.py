@@ -113,6 +113,22 @@ class stack_blocks_two(Base_Task):
         self.last_actor = block
         return str(arm_tag)
 
+    def get_obs(self):
+        """Override get_obs to include block pose information for state-based policies"""
+        # Get base observation
+        obs = super().get_obs()
+
+        # Add block poses for state-based observations
+        if hasattr(self, 'block1') and self.block1 is not None:
+            block1_pose = self.block1.get_pose()
+            obs["block1_pose"] = block1_pose.p.tolist() + block1_pose.q.tolist()
+
+        if hasattr(self, 'block2') and self.block2 is not None:
+            block2_pose = self.block2.get_pose()
+            obs["block2_pose"] = block2_pose.p.tolist() + block2_pose.q.tolist()
+
+        return obs
+
     def check_success(self):
         block1_pose = self.block1.get_pose().p
         block2_pose = self.block2.get_pose().p
